@@ -38,13 +38,14 @@ export const startSpotifyLogin = async () => {
   const clientSecret = import.meta.env.VITE_CLIENT_SECRET;
   const scope = "playlist-read-private playlist-read-collaborative";
 
+  const redirectUri = import.meta.env.VITE_REDIRECT_URI;
   const params = {
     response_type: "code",
     client_id: clientId,
     scope: scope,
     code_challenge_method: "S256",
     code_challenge: codeChallenge,
-    redirect_uri: "http://127.0.0.1:5173/callback",
+    redirect_uri: redirectUri,
     state: generateRandomString(16),
   };
 
@@ -62,6 +63,7 @@ export const getAccessToken = async () => {
   if (!code) return null;
 
   const url = "https://accounts.spotify.com/api/token";
+  const redirectUri = import.meta.env.VITE_REDIRECT_URI;
   const payload = {
     method: "POST",
     headers: {
@@ -71,7 +73,7 @@ export const getAccessToken = async () => {
       client_id: clientId,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://127.0.0.1:5173/callback",
+      redirect_uri: redirectUri,
       code_verifier: codeVerifier,
     }),
   };
